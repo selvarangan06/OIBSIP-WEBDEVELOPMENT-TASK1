@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuildFirst — Learn Web Dev by Building</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0B1120;
+      --navy-mid: #141E33;
+      --navy-card: #1A2540;
+      --navy-border: #253354;
+      --cyan: #00D4FF;
+      --cyan-dim: rgba(0, 212, 255, 0.12);
+      --cyan-glow: rgba(0, 212, 255, 0.25);
+      --cream: #F2EFE9;
+      --muted: #8A9BBB;
+      --accent-green: #00E5A0;
+      --accent-amber: #FFB340;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 6vw;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--cyan); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: var(--navy);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.55rem 1.25rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 7rem 6vw 5rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 100px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      margin-bottom: 1.25rem;
+    }
+
+    h1 .highlight {
+      color: var(--cyan);
+      position: relative;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 42ch;
+      margin-bottom: 2.25rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--navy);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--cream);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--navy-border);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--navy-border);
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    /* CODE WINDOW */
+    .code-window {
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0, 212, 255, 0.06);
+    }
+
+    .code-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.1rem;
+      background: var(--navy-card);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .dot-red { background: #FF5F57; }
+    .dot-yellow { background: #FEBC2E; }
+    .dot-green { background: #28C840; }
+
+    .code-filename {
+      margin-left: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .code-body {
+      padding: 1.5rem 1.5rem 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.85;
+      min-height: 320px;
+    }
+
+    .line { display: flex; gap: 0.75rem; }
+    .ln { color: #3D4F6E; min-width: 1.5rem; user-select: none; text-align: right; }
+    .tag { color: #569CD6; }
+    .attr { color: #9CDCFE; }
+    .val { color: #CE9178; }
+    .css-prop { color: #9CDCFE; }
+    .css-val { color: #CE9178; }
+    .comment { color: #608B4E; }
+    .hl { color: var(--accent-green); }
+
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--cyan);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* FEATURES */
+    .section {
+      padding: 6rem 6vw;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-intro {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 52ch;
+      margin-bottom: 3.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+      font-size: 1.15rem;
+    }
+
+    .feature-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* STEPS */
+    .steps-section {
+      padding: 6rem 6vw;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      position: relative;
+      margin-top: 3.5rem;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(10% + 28px);
+      right: calc(10% + 28px);
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--navy-border) 10%, var(--navy-border) 90%, transparent);
+    }
+
+    .step {
+      padding: 0 1.5rem 0;
+      position: relative;
+    }
+
+    .step-num-wrap {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 1px solid var(--navy-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--cyan);
+    }
+
+    .step-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* PROJECT SHOWCASE */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .project-card {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .project-preview {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 1.25rem;
+      line-height: 1.7;
+    }
+
+    .preview-lp { background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); color: #7EB8F7; }
+    .preview-calc { background: linear-gradient(135deg, #0D1B2A 0%, #1B2838 100%); color: #56CCF2; }
+    .preview-quiz { background: linear-gradient(135deg, #1A0A2E 0%, #2D1B69 100%); color: #BB86FC; }
+
+    .project-info { padding: 1.25rem; }
+
+    .project-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+    }
+
+    .project-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+
+    .project-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* CTA */
+    .cta-section {
+      padding: 6rem 6vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 { margin-bottom: 1rem; }
+    .cta-section p { color: var(--muted); max-width: 48ch; margin: 0 auto 2.5rem; }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy-mid);
+      border-top: 1px solid var(--navy-border);
+      padding: 3rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--cyan); }
+
+    .footer-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--cream); }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2.5rem; padding-top: 6rem; }
+      .hero-code { display: none; }
+      nav .nav-links { display: none; }
+      .steps-grid::before { display: none; }
+      .hero-stats { gap: 1.5rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Build<span>First</span></a>
+    <ul class="nav-links">
+      <li><a href="#learn">Learn</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#steps">How it works</a></li>
+    </ul>
+    <a href="#start" class="nav-cta">Start for free →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">v1.0 — Your first landing page</div>
+      <h1>Build real things.<br /><span class="highlight">Learn by doing.</span></h1>
+      <p class="hero-sub">The fastest way to understand HTML &amp; CSS is to ship something. We guide you from blank file to live page — no fluff, no theory overload.</p>
+      <div class="hero-actions">
+        <a href="#start" class="btn-primary">Start building →</a>
+        <a href="#projects" class="btn-secondary">See projects</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Projects to build</div>
+        </div>
+        <div>
+          <div class="stat-num">0</div>
+          <div class="stat-label">Paid tools required</div>
+        </div>
+        <div>
+          <div class="stat-num">4 hrs</div>
+          <div class="stat-label">To your first live page</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated code window -->
+    <div class="code-window hero-code">
+      <div class="code-titlebar">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="code-filename">index.html</span>
+      </div>
+      <div class="code-body" id="codeBody">
+        <div class="line"><span class="ln">1</span><span class="comment">&lt;!-- Your landing page --&gt;</span></div>
+        <div class="line"><span class="ln">2</span><span class="tag">&lt;section</span> <span class="attr">class</span>=<span class="val">"hero"</span><span class="tag">&gt;</span></div>
+        <div class="line"><span class="ln">3</span>&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span><span class="hl">Build something real</span><span class="tag">&lt;/h1&gt;</span></div>
+        <div class="line"><span class="ln">4</span>&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Start with HTML, grow with CSS.<span class="tag">&lt;/p&gt;</span></div>
+        <div class="line"><span class="ln">5</span>&nbsp;&nbsp;<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#"</span> <span class="attr">class</span>=<span class="val">"btn"</span><span class="tag">&gt;</span>Get started<span class="tag">&lt;/a&gt;</span></div>
+        <div class="line"><span class="ln">6</span><span class="tag">&lt;/section&gt;</span></div>
+        <div class="line"><span class="ln">7</span>&nbsp;</div>
+        <div class="line"><span class="ln">8</span><span class="comment">/* style.css */</span></div>
+        <div class="line"><span class="ln">9</span><span class="css-prop">.hero</span> {</div>
+        <div class="line"><span class="ln">10</span>&nbsp;&nbsp;<span class="css-prop">display</span>: <span class="css-val">flex</span>;</div>
+        <div class="line"><span class="ln">11</span>&nbsp;&nbsp;<span class="css-prop">padding</span>: <span class="css-val">4rem 2rem</span>;</div>
+        <div class="line"><span class="ln">12</span>&nbsp;&nbsp;<span class="css-prop">background</span>: <span class="css-val">#0B1120</span>;</div>
+        <div class="line"><span class="ln">13</span>}<span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="learn">
+    <p class="section-label">// what you will learn</p>
+    <h2>Everything a landing page teaches you</h2>
+    <p class="section-intro">One project, a full mental model. These are the skills you lock in before moving on.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⬛</div>
+        <div class="feature-title">Document structure</div>
+        <p class="feature-desc">Header, main, footer, nav — how a page is organized before a single pixel of style is applied.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⬜</div>
+        <div class="feature-title">The box model</div>
+        <p class="feature-desc">Margin, padding, border, content. Once you get this, elements stop behaving like strangers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏹</div>
+        <div class="feature-title">Flexbox &amp; Grid</div>
+        <p class="feature-desc">Two layout systems that handle columns, alignment, and spacing without fighting the browser.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Color &amp; typography</div>
+        <p class="feature-desc">Picking a palette, pairing fonts, setting a type scale — the craft behind readable, good-looking pages.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Responsive design</div>
+        <p class="feature-desc">Media queries, relative units, and mobile-first thinking so the page works on every screen.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">CSS transitions</div>
+        <p class="feature-desc">Hover states, smooth fades, button feedback — the small animations that make a page feel alive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps-section" id="steps">
+    <p class="section-label">// how it works</p>
+    <h2>From empty file to live page</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num-wrap"><span class="step-num">01</span></div>
+        <div class="step-title">Pick a project</div>
+        <p class="step-desc">Choose a real-world page to clone or design from scratch. We have 12 starting points.</p>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap"><span class="step-num">02</span></div>
+        <div class="step-title">Read the brief</div>
+        <p class="step-desc">Each project comes with a layout spec, color palette suggestion, and a list of concepts it covers.</p>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap"><span class="step-num">03</span></div>
+        <div class="step-title">Write the HTML</div>
+        <p class="step-desc">Structure first. Build the skeleton in HTML before touching a single line of CSS.</p>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap"><span class="step-num">04</span></div>
+        <div class="step-title">Style it</div>
+        <p class="step-desc">Add CSS section by section. Compare your result against the spec and refine.</p>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap"><span class="step-num">05</span></div>
+        <div class="step-title">Ship it</div>
+        <p class="step-desc">Deploy to GitHub Pages or Netlify in under two minutes. Show it to someone real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <p class="section-label">// starter projects</p>
+    <h2>Build these. In this order.</h2>
+    <p class="section-intro">Sequenced by complexity. Each one introduces something new without dropping you in the deep end.</p>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-preview preview-lp">
+          &lt;section class="hero"&gt;<br />
+          &nbsp;&nbsp;&lt;h1&gt;Your headline&lt;/h1&gt;<br />
+          &nbsp;&nbsp;&lt;p&gt;A short tagline here.&lt;/p&gt;<br />
+          &nbsp;&nbsp;&lt;a href="#"&gt;Get started&lt;/a&gt;<br />
+          &lt;/section&gt;
+        </div>
+        <div class="project-info">
+          <span class="project-tag">01 — beginner</span>
+          <div class="project-name">Landing Page</div>
+          <p class="project-desc">Sections, columns, hero, footer. Your first real HTML + CSS project.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-preview preview-calc">
+          &lt;div class="calc"&gt;<br />
+          &nbsp;&nbsp;&lt;p class="display"&gt;0&lt;/p&gt;<br />
+          &nbsp;&nbsp;&lt;div class="keys"&gt;<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&lt;button&gt;7&lt;/button&gt;…<br />
+          &nbsp;&nbsp;&lt;/div&gt;<br />
+          &lt;/div&gt;
+        </div>
+        <div class="project-info">
+          <span class="project-tag">02 — beginner</span>
+          <div class="project-name">Calculator</div>
+          <p class="project-desc">Grid layout, button styling, and your first taste of JavaScript logic.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-preview preview-quiz">
+          &lt;div class="quiz-card"&gt;<br />
+          &nbsp;&nbsp;&lt;h2&gt;Question 1 of 5&lt;/h2&gt;<br />
+          &nbsp;&nbsp;&lt;ul class="options"&gt;<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Option A&lt;/li&gt;…<br />
+          &nbsp;&nbsp;&lt;/ul&gt;<br />
+          &lt;/div&gt;
+        </div>
+        <div class="project-info">
+          <span class="project-tag">03 — intermediate</span>
+          <div class="project-name">Quiz App</div>
+          <p class="project-desc">Card components, state changes, and dynamic class toggling with JS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="start">
+    <div class="cta-glow"></div>
+    <p class="section-label">// ready to start</p>
+    <h2>Write your first line of HTML today.</h2>
+    <p>No account. No setup. Just open a text editor, create a file called <code style="font-family:'JetBrains Mono',monospace; font-size:0.9em; background:var(--navy-card); padding:0.15em 0.45em; border-radius:4px; color:var(--cyan);">index.html</code>, and begin.</p>
+    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+      <a href="#" class="btn-primary" style="font-size:1rem; padding:0.9rem 2rem;">Start your first project →</a>
+      <a href="#learn" class="btn-secondary" style="font-size:1rem; padding:0.9rem 2rem;">Browse all projects</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">Build<span>First</span></a>
+    <ul class="footer-links">
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Guides</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">GitHub</a></li>
+    </ul>
+    <span class="footer-copy">Built with HTML &amp; CSS. Naturally.</span>
+  </footer>
+
+</body>
+</html>
